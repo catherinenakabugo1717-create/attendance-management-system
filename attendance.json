@@ -1,0 +1,42 @@
+[
+  {
+    "student": "Catherine Nakabugo",
+    "status": "Present",
+    "date": "2026-05-10"
+  },
+  {
+    "student": "Gidudu Moses",
+    "status": "Present",
+    "date": "2026-05-11"
+  },
+  {
+    "student": "Shididi Mustafa",
+    "status": "Absent",
+    "date": "2026-05-11"
+  },
+  {
+    "student": "Odek Isaac",
+    "status": "Present",
+    "date": "2026-05-11"
+  },
+  {
+    "student": "Kabenge Andrew",
+    "status": "Absent",
+    "date": "2026-05-11"
+  },
+  {
+    "student": "Catherine Nakabugo",
+    "status": "Present",
+    "date": "2026-05-14"
+  },
+  {
+    "student": "Okello Joshua",
+    "status": "Absent",
+    "date": "2026-05-14"
+  },
+  {
+    "student": "Catherine Nakabugo",
+    "status": "Present",
+    "date": "2026-05-18"
+  }
+]
