@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 200px;
+            background: #1abc9c;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .card h2 {
+            font-size: 30px;
+            margin: 0;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="students.html">Students</a>
+    <a href="attendance.html">Attendance</a>
+    <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+    <h1>Attendance System Dashboard</h1>
+
+    <p>Welcome to your cloud-based attendance system</p>
+
+    <div class="cards">
+
+        <div class="card">
+            <h2 id="totalStudents">0</h2>
+            <p>Total Students</p>
+        </div>
+
+        <div class="card">
+            <h2 id="totalAttendance">0</h2>
+            <p>Total Attendance</p>
+        </div>
+
+        <div class="card">
+            <h2 id="present">0</h2>
+            <p>Present</p>
+        </div>
+
+        <div class="card">
+            <h2 id="absent">0</h2>
+            <p>Absent</p>
+        </div>
+
+    </div>
+
+        <hr>
+
+    <h2>Student Attendance Performance</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Attendance %</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentStats"></tbody>
+
+    </table>
+
+</div>
+
+<!-- AUTH SCRIPT -->
+<script src="js/auth.js"></script>
+
+<!-- DASHBOARD LOGIC -->
+<script>
+
+const API = "http://localhost:3000";
+
+// LOAD STUDENT STATS
+fetch(`${API}/stats/students`)
+.then(res => res.json())
+.then(data => {
+    document.getElementById("totalStudents").innerText = data.total;
+});
+
+// LOAD ATTENDANCE STATS
+fetch(`${API}/stats/attendance`)
+.then(res => res.json())
+.then(data => {
+
+    document.getElementById("totalAttendance").innerText = data.total;
+    document.getElementById("present").innerText = data.present;
+    document.getElementById("absent").innerText = data.absent;
+
+});
+
+fetch(`${API}/stats/advanced`)
+.then(res => res.json())
+.then(data => {
+
+    document.getElementById("totalStudents").innerText = data.totalStudents;
+    document.getElementById("totalAttendance").innerText = data.totalAttendance;
+    document.getElementById("present").innerText = data.present;
+    document.getElementById("absent").innerText = data.absent;
+    document.getElementById("rate").innerText = data.attendanceRate + "%";
+
+});
+
+fetch(`${API}/stats/per-student`)
+.then(res => res.json())
+.then(data => {
+
+    let table = document.getElementById("studentStats");
+
+    table.innerHTML = "";
+
+    data.forEach(s => {
+
+        table.innerHTML += `
+            <tr>
+                <td>${s.name}</td>
+                <td>${s.percentage}%</td>
+            </tr>
+        `;
+
+    });
+
+});
+
+</script>
+
+</body>
+
+</html>

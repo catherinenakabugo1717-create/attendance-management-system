@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Students</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <script>
+        if(localStorage.getItem("token") !== "logged-in-admin"){
+            window.location.href = "login.html";
+        }
+    </script>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="students.html">Students</a>
+    <a href="attendance.html">Attendance</a>
+    <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<div class="container">
+
+    <h2>Add Student</h2>
+
+    <input type="text" id="name" placeholder="Student Name">
+
+    <input type="text" id="reg" placeholder="Registration Number">
+
+    <button onclick="addStudent()">Add Student</button>
+
+    <hr>
+
+    <h2>Student List</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Reg No</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentTable"></tbody>
+
+    </table>
+
+</div>
+
+<script src="js/auth.js"></script>
+
+<script>
+
+const API = "http://localhost:3000";
+
+
+// ADD STUDENT
+function addStudent(){
+
+    fetch(`${API}/students`, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type":"application/json"
+        },
+
+        body: JSON.stringify({
+
+            name: document.getElementById("name").value,
+
+            registration_number: document.getElementById("reg").value
+
+        })
+
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        alert(data.message);
+
+        loadStudents();
+
+    });
+
+}
+
+
+// LOAD STUDENTS
+function loadStudents(){
+
+    fetch(`${API}/students`)
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        let table = document.getElementById("studentTable");
+
+        table.innerHTML = "";
+
+        data.forEach(s => {
+
+            table.innerHTML += `
+                <tr>
+                    <td>${s.name}</td>
+                    <td>${s.registration_number}</td>
+                    <td>
+                        <button onclick="deleteStudent('${s.name}')">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            `;
+
+        });
+
+    });
+
+}
+
+
+// DELETE STUDENT
+function deleteStudent(name){
+
+    fetch(`${API}/students/${name}`, {
+        method: "DELETE"
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        alert(data.message);
+
+        loadStudents();
+
+    });
+
+}
+
+
+// INIT
+loadStudents();
+
+</script>
+
+</body>
+
+</html>
